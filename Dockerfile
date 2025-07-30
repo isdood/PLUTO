@@ -40,6 +40,16 @@ WORKDIR /workspace
 RUN pip install --upgrade pip setuptools wheel
 RUN pip install -r requirements.txt
 
+# Install model requirements with specific versions for ROCm compatibility
+RUN pip install --upgrade pip && \
+    pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/rocm5.6 && \
+    pip install -r requirements-model.txt
+
+# Configure accelerate
+RUN mkdir -p /workspace/models && \
+    mkdir -p /root/.cache/huggingface/accelerate && \
+    echo 'compute_environment: LOCAL_MACHINE\ndistributed_type: NO\nuse_cpu: False\n' > /root/.cache/huggingface/accelerate/default_config.yaml
+
 # Install GLIMMER package in development mode
 RUN pip install -e .
 

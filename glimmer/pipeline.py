@@ -133,4 +133,70 @@ class GlimmerDataset:
         except json.JSONDecodeError as e:
             raise ValueError(f"Invalid JSON in {file_path.name}: {str(e)}")
         except Exception as e:
-            raise ValueError(f"Error parsing {file_path.name}: {str(e)}")
+            raise ValueError(f"Error loading {file_path.name}: {str(e)}")
+            
+    def to_training_examples(self) -> List[TrainingExample]:
+        """Convert loaded patterns into training examples.
+        
+        Returns:
+            List of TrainingExample objects ready for LLM fine-tuning
+        """
+        examples = []
+        for pattern in self.processor.patterns:
+            try:
+                # Create a training example from each pattern
+                example = TrainingExample(
+                    text=pattern.story,  # Use the story field from the pattern
+                    metadata={
+                        "author": pattern.metadata.get("author", "Unknown"),
+                        "pattern_type": pattern.metadata.get("type", "unknown"),
+                        "pattern_version": pattern.metadata.get("pattern_version", "unknown"),
+                        "timestamp": pattern.metadata.get("timestamp", ""),
+                        "source_file": getattr(pattern, "source_file", "unknown")
+                    }
+                )
+                examples.append(example)
+            except Exception as e:
+                logger.error(f"Error creating training example from pattern: {str(e)}")
+                continue
+                
+        return examples
+        
+    def to_jsonl(self, output_file: Union[str, Path], **kwargs) -> None:
+        """Save the dataset as a JSONL file for LLM fine-tuning.
+        
+        Args:
+            output_file: Path to the output JSONL file
+            **kwargs: Additional keyword arguments to pass to json.dumps()
+        """
+        output_path = Path(output_file)
+        examples = self.to_training_examples()
+        
+        if not examples:
+            logger.warning("No training examples to save. Did you load any patterns?")
+            return
+            
+        # Ensure the output directory exists
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        
+        # Write examples to JSONL file
+        with open(output_path, 'w', encoding='utf-8') as f:
+            for example in examples:
+                # Convert to dict and add any additional fields
+                example_dict = example.to_dict()
+                
+                # Add system prompt if provided
+                system_prompt = kwargs.pop('system_prompt', None)
+                if system_prompt:
+                    example_dict['system_prompt'] = system_prompt
+                    
+                # Add instruction if provided
+                instruction = kwargs.pop('instruction', None)
+                if instruction:
+                    example_dict['instruction'] = instruction
+                
+                # Write the JSON line
+                json_line = json.dumps(example_dict, ensure_ascii=False, **kwargs)
+                f.write(json_line + '\n')
+                
+        logger.info(f"Saved {len(examples)} training examples to {output_path}")
