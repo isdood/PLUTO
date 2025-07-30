@@ -7,6 +7,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PIP_NO_CACHE_DIR=1
+ENV PYTHONPATH=/workspace:$PYTHONPATH
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -14,6 +15,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     wget \
     python3-pip \
+    python3-venv \
     build-essential \
     cmake \
     rocm-smi \
@@ -30,10 +32,16 @@ ENV VIRTUAL_ENV=/opt/venv
 RUN python3 -m venv $VIRTUAL_ENV
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
+# Copy source code first
+COPY . /workspace
+WORKDIR /workspace
+
 # Install Python packages
-COPY requirements.txt .
 RUN pip install --upgrade pip setuptools wheel
 RUN pip install -r requirements.txt
+
+# Install GLIMMER package in development mode
+RUN pip install -e .
 
 # Create workspace directory
 WORKDIR /workspace

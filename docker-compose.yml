@@ -13,14 +13,18 @@ services:
       - /opt/rocm-5.6.1:/opt/rocm-5.6.1
       - /opt/rocm:/opt/rocm
       - /opt/rocm-5.6.1/opencl:/etc/OpenCL/vendors
+      # Development volumes
+      - ./glimmer:/workspace/glimmer
+      - ./tests:/workspace/tests
     environment:
+      - PYTHONPATH=/workspace
       - ROCR_VISIBLE_DEVICES=all
       - HSA_OVERRIDE_GFX_VERSION=10.3.0
       - PYTORCH_HIP_ALLOC_CONF=max_split_size_mb:512
       - ROC_ENABLE_PRE_VEGA=1
-      - ROCR_VISIBLE_DEVICES=0
-      - HSA_OVERRIDE_GFX_VERSION=10.3.0
       - HSA_ENABLE_SDMA=0
+      - PYTHONUNBUFFERED=1
+      - PYTHONDONTWRITEBYTECODE=1
     devices:
       - /dev/kfd
       - /dev/dri/renderD128
@@ -34,3 +38,5 @@ services:
     tty: true
     stdin_open: true
     privileged: true
+    working_dir: /workspace
+    command: /bin/bash -c "while true; do sleep 1000; done"
