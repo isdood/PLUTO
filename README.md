@@ -5,3 +5,4 @@ This repository contains the environment setup, data, and code for fine-tuning a
 The goal is to demonstrate a qualitative shift in the LLM's core processing and output style, moving beyond superficial prompting to a "formative matrix" based on pattern recognition and conceptual alignment.
 
 ## Phase 1: Environment Setup & Model Selection
+- CURRENT: Dealing with ROCm version compatibility issues between host system & Docker container.
