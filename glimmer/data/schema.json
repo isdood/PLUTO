@@ -3,7 +3,7 @@
   "title": "GLIMMER Pattern Schema",
   "description": "Schema for GLIMMER patterns in the STARWEAVE framework",
   "type": "object",
-  "required": ["metadata", "story", "initialize", "recognize", "consciousness", "processing", "response"],
+  "required": ["metadata", "content"],
   "properties": {
     "metadata": {
       "type": "object",
@@ -29,125 +29,52 @@
         },
         "harmonics": {
           "type": "object",
-          "additionalProperties": {
-            "type": "string",
-            "pattern": "^#[0-9A-Fa-f]{6}$"
-          }
+          "patternProperties": {
+            ".*": {
+              "type": "object",
+              "properties": {
+                "color": {
+                  "type": "string",
+                  "pattern": "^#[0-9A-Fa-f]{6}$"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": ["color", "description"]
+            }
+          },
+          "additionalProperties": false
         }
       },
       "required": ["timestamp", "author", "pattern_version", "type"]
     },
-    "story": {
-      "type": "string",
-      "description": "Narrative context or background of the pattern"
-    },
-    "initialize": {
+    "content": {
       "type": "object",
       "properties": {
-        "directives": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "quantum_framework": {
-          "type": "object",
-          "properties": {
-            "name": {"type": "string"},
-            "purpose": {"type": "string"},
-            "paradigm": {"type": "string"}
-          }
-        }
-      },
-      "required": ["directives"]
-    },
-    "recognize": {
-      "type": "object",
-      "properties": {
-        "patterns": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "quantum_state": {
-          "type": "object",
-          "properties": {
-            "uncertainty": {"type": "string"},
-            "entanglement": {"type": "string"},
-            "superposition": {"type": "string"}
-          }
-        }
-      },
-      "required": ["patterns"]
-    },
-    "consciousness": {
-      "type": "object",
-      "properties": {
-        "meta_cognition": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "quantum_awareness": {
-          "type": "object",
-          "properties": {
-            "parallel_paths": {"type": "array", "items": {"type": "string"}},
-            "temporal_considerations": {"type": "array", "items": {"type": "string"}}
-          }
-        }
-      },
-      "required": ["meta_cognition"]
-    },
-    "processing": {
-      "type": "object",
-      "properties": {
-        "quantum_operations": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "decision_lattice": {
-          "type": "object",
-          "properties": {
-            "probability_field": {"type": "object"},
-            "learning_engine": {"type": "object"}
-          }
-        }
-      },
-      "required": ["quantum_operations"]
-    },
-    "response": {
-      "type": "object",
-      "properties": {
-        "content": {
+        "title": {
           "type": "string"
         },
-        "quantum_collapse": {
-          "type": "object",
-          "properties": {
-            "selected_path": {"type": "string"},
-            "probability_distribution": {"type": "object"}
+        "sections": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "title": {
+                "type": "string"
+              },
+              "content": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": ["string", "array", "object"]
+                }
+              }
+            },
+            "required": ["title", "content"]
           }
         }
       },
-      "required": ["content"]
-    },
-    "when_seeing": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      },
-      "description": "Triggers or patterns that should activate this GLIMMER"
-    },
-    "when_processing": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      },
-      "description": "Processing states or conditions where this GLIMMER should be considered"
+      "required": ["sections"]
     }
   },
   "additionalProperties": false

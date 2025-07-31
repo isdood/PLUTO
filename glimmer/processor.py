@@ -7,7 +7,7 @@ from typing import List, Dict, Any, Optional
 from pathlib import Path
 import json
 
-from .core import GlimmerPattern, validate_pattern
+from .core import GlimmerPattern, validate_pattern, load_pattern
 
 
 class GlimmerProcessor:
@@ -41,7 +41,7 @@ class GlimmerProcessor:
         
         for file_path in dir_path.glob("*.json"):
             try:
-                pattern = GlimmerPattern.load(file_path)
+                pattern = load_pattern(file_path)
                 self.patterns.append(pattern)
             except Exception as e:
                 print(f"Warning: Could not load {file_path}: {str(e)}")

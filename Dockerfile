@@ -50,6 +50,9 @@ RUN mkdir -p /workspace/models && \
     mkdir -p /root/.cache/huggingface/accelerate && \
     echo 'compute_environment: LOCAL_MACHINE\ndistributed_type: NO\nuse_cpu: False\n' > /root/.cache/huggingface/accelerate/default_config.yaml
 
+# Install development dependencies
+RUN pip install -r requirements-dev.txt
+
 # Install GLIMMER package in development mode
 RUN pip install -e .
 
