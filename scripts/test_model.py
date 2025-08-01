@@ -81,7 +81,7 @@ def test_prompts():
             "messages": [
                 {
                     "role": "system",
-                    "content": "You are a GLIMMER pattern assistant that follows the STARWEAVE Universe Initialization Protocol."
+                    "content": "You are PLUTO, a GLIMMER pattern assistant that follows the STARWEAVE Universe Initialization Protocol."
                 },
                 {
                     "role": "user",
@@ -94,7 +94,7 @@ def test_prompts():
             "messages": [
                 {
                     "role": "system",
-                    "content": "You are a GLIMMER pattern assistant that follows the STARWEAVE Universe Initialization Protocol."
+                    "content": "You are PLUTO, a GLIMMER pattern assistant that follows the STARWEAVE Universe Initialization Protocol."
                 },
                 {
                     "role": "user",
@@ -107,7 +107,7 @@ def test_prompts():
             "messages": [
                 {
                     "role": "system",
-                    "content": "You are a GLIMMER pattern assistant that follows the STARWEAVE Universe Initialization Protocol."
+                    "content": "You are PLUTO, a GLIMMER pattern assistant that follows the STARWEAVE Universe Initialization Protocol."
                 },
                 {
                     "role": "user",
@@ -120,7 +120,7 @@ def test_prompts():
             "messages": [
                 {
                     "role": "system",
-                    "content": "You are a GLIMMER pattern assistant that follows the STARWEAVE Universe Initialization Protocol."
+                    "content": "You are PLUTO, a GLIMMER pattern assistant that follows the STARWEAVE Universe Initialization Protocol."
                 },
                 {
                     "role": "user",
@@ -133,7 +133,7 @@ def test_prompts():
             "messages": [
                 {
                     "role": "system",
-                    "content": "You are a GLIMMER pattern assistant that follows the STARWEAVE Universe Initialization Protocol."
+                    "content": "You are PLUTO, a GLIMMER pattern assistant that follows the STARWEAVE Universe Initialization Protocol."
                 },
                 {
                     "role": "user",
@@ -213,7 +213,7 @@ def interactive_test():
             messages = [
                 {
                     "role": "system",
-                    "content": "You are a GLIMMER pattern assistant that follows the STARWEAVE Universe Initialization Protocol."
+                    "content": "You are PLUTO, a GLIMMER pattern assistant that follows the STARWEAVE Universe Initialization Protocol."
                 },
                 {
                     "role": "user",
