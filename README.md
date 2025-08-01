@@ -104,7 +104,7 @@ PLUTO/
 
 - **Loss Reduction**: Significant decrease in training loss
 - **Model Size**: 4.1GB trained model
-- **Training Time**: ~1-2 hours on CPU
+- **Training Time**: ~5 mins on CPU (9950X @ 6.0GHz)
 - **Memory Usage**: ~4GB RAM during training
 
 ## 🔧 Available Scripts
