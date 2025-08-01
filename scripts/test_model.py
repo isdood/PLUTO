@@ -37,7 +37,7 @@ def load_model(model_path: str):
         return None, None
 
 def format_prompt(messages):
-    """Format messages into a prompt string."""
+    """Format messages into a prompt string suitable for TinyLlama chat."""
     formatted = []
     for msg in messages:
         role = msg["role"]
@@ -50,25 +50,42 @@ def format_prompt(messages):
             formatted.append(f"<|assistant|>\n{content}</s>")
         else:
             formatted.append(f"{role.capitalize()}: {content}")
+    # Append assistant tag to signal the model to generate a continuation
+    formatted.append("<|assistant|>\n")
+    return "".join(formatted)
     return "\n".join(formatted)
 
 def generate_response(model, tokenizer, prompt, max_length=512, temperature=0.7):
     """Generate a response from the model."""
+    
     inputs = tokenizer(prompt, return_tensors="pt", truncation=True, max_length=max_length)
+    input_length = inputs['input_ids'].shape[1]
+    
     
     with torch.no_grad():
         outputs = model.generate(
             **inputs,
-            max_new_tokens=200,
+            max_new_tokens=150,
             temperature=temperature,
             do_sample=True,
+            top_p=0.9,
+            top_k=50,
+            repetition_penalty=1.1,
             pad_token_id=tokenizer.eos_token_id,
             eos_token_id=tokenizer.eos_token_id,
         )
     
-    response = tokenizer.decode(outputs[0], skip_special_tokens=True)
-    # Remove the input prompt from the response
-    response = response[len(prompt):].strip()
+    
+    # Extract only the generated tokens (after the input)
+    generated_tokens = outputs[0][input_length:]
+    
+    response = tokenizer.decode(generated_tokens, skip_special_tokens=True).strip()
+    
+    
+    # Clean up any remaining formatting artifacts
+    if response.startswith('istant|>'):
+        response = response[8:].strip()
+    
     return response
 
 def test_prompts():
